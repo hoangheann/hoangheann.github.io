@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Post</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .image-preview div {
+            position: relative;
+            margin: 5px;
+        }
+        .image-preview img {
+            max-width: 100px;
+        }
+        .image-preview .btn-delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            cursor: pointer;
+            padding: 2px 5px;
+            font-size: 12px;
+        }
+        .btn-center {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">
+    <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+  </a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Post view</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Comment view</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Docs</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="form-group pt-5">
+        <textarea id="paragraph" class="form-control" name="paragraph" rows="15"></textarea>
+    </div>
+    <div class="form-group">
+        <input type="file" id="imageInput" multiple class="form-control">
+    </div>
+    <div id="images" class="image-preview"></div>
+    <div class="btn-center">
+        <button id="submit" class="btn btn-primary mr-2">Save change</button>
+        <button id="delete" class="btn btn-danger">Delete post</button>
+    </div>
+</div>
+
+<div class="container">
+  <footer class="py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+    </ul>
+    <p class="text-center text-muted">© 2024 | NDH - Hue city</p>
+  </footer>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+<script>
+    // Firebase configuration
+    var firebaseConfig = {
+        databaseURL: "https://qhfbkit-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var postKey = urlParams.get('post');
+        var paragraphTextarea = document.getElementById('paragraph');
+        var imageContainer = document.getElementById('images');
+        var imageInput = document.getElementById('imageInput');
+        var submitButton = document.getElementById('submit');
+        var deleteButton = document.getElementById('delete');
+        var existingImages = [];
+
+        if (postKey) {
+            firebase.database().ref('/' + postKey).once('value').then(function(snapshot) {
+                var postData = snapshot.val();
+                paragraphTextarea.value = postData.paragraph;
+
+                existingImages = postData.images || [];
+                displayImages(existingImages);
+            }).catch(function(error) {
+                console.error('Error fetching post data:', error);
+            });
+        }
+
+        imageInput.addEventListener('change', function() {
+            Array.from(imageInput.files).forEach(function(file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    existingImages.push(e.target.result);
+                    displayImages(existingImages);
+                };
+                reader.readAsDataURL(file);
+            });
+            imageInput.value = '';
+        });
+
+        submitButton.addEventListener('click', function() {
+            var paragraph = paragraphTextarea.value;
+            firebase.database().ref('/' + postKey).update({
+                paragraph: paragraph,
+                images: existingImages
+            }).then(function() {
+                alert('Changes saved successfully!');
+            }).catch(function(error) {
+                console.error('Error saving changes:', error);
+            });
+        });
+
+        deleteButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to delete this post?')) {
+                firebase.database().ref('/' + postKey).remove().then(function() {
+                    alert('Post deleted successfully!');
+                    window.location.href = 'index.html'; // Redirect to the homepage
+                }).catch(function(error) {
+                    console.error('Error deleting post:', error);
+                });
+            }
+        });
+
+        function displayImages(images) {
+            imageContainer.innerHTML = '';
+            images.forEach(function(image, index) {
+                var img = document.createElement('img');
+                img.src = image;
+                var deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('btn-delete');
+                deleteButton.addEventListener('click', function() {
+                    existingImages.splice(index, 1);
+                    displayImages(existingImages);
+                });
+                var container = document.createElement('div');
+                container.appendChild(img);
+                container.appendChild(deleteButton);
+                imageContainer.appendChild(container);
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

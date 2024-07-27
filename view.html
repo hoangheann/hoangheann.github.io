@@ -32,6 +32,12 @@
             justify-content: center;
             margin-top: 20px;
         }
+        .border-box {
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +57,9 @@
         <a class="nav-link" href="#">Post view</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="#">Group view</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#">Comment view</a>
       </li>
       <li class="nav-item">
@@ -61,18 +70,37 @@
 </nav>
 
 <div class="container">
-    <div class="form-group pt-5">
-        <textarea id="paragraph" class="form-control" name="paragraph" rows="15"></textarea>
-    </div>
-    <div class="form-group">
-        <input type="file" id="imageInput" multiple class="form-control">
-    </div>
-    <div id="images" class="image-preview"></div>
-    <div class="btn-center">
-        <button id="submit" class="btn btn-primary mr-2">Save change</button>
-        <button id="delete" class="btn btn-danger">Delete post</button>
+    <div class="row">
+        <!-- Cột 1 -->
+        <div class="col-md-8 pt-5">
+            <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
+                <div class="col-md-12">
+                    <h3>Edit post</h3>
+                    <div class="form-group pt-5">
+                        <textarea id="paragraph" class="form-control" name="paragraph" rows="15"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="file" id="imageInput" multiple class="form-control">
+                    </div>
+                    <div id="images" class="image-preview"></div>
+                    <div class="btn-center">
+                        <button id="submit" class="btn btn-primary mr-2">Save change</button>
+                        <button id="delete" class="btn btn-danger">Delete post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột 2 -->
+        <div class="col-md-4 pt-4">
+            <div class="border-box" style="height: 550px; overflow-y: auto;">
+                <ul id="post-list">
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <div class="container">
   <footer class="py-3 my-4">
@@ -173,6 +201,18 @@
                 imageContainer.appendChild(container);
             });
         }
+
+    var postList = document.getElementById('post-list');
+    firebase.database().ref('/').on('value', function(snapshot) {
+        postList.innerHTML = ''; // Clear the list before adding new items
+        snapshot.forEach(function(childSnapshot) {
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            var li = `<li><a href="/post.html?post=${key}">${childData.title}</a></li>`;
+            postList.innerHTML = li + postList.innerHTML; // Add new items at the top
+        });
+    });
+
     });
 </script>
 

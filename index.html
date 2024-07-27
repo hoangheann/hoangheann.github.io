@@ -45,6 +45,9 @@
         <a class="nav-link" href="#">Post view</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="#">Group view</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#">Comment view</a>
       </li>
       <li class="nav-item">
@@ -192,6 +195,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('submit').addEventListener('click', function() {
         var title = document.getElementById('title').value;
         var paragraph = document.getElementById('paragraph').value;
+        if (imageInput.files.length < 1 || title.length < 1 || paragraph.length < 1) {
+          alert('Vui lòng nhập đầy đủ các thông tin')
+        }
         var images = Array.from(imageInput.files).map(function(file) {
             return new Promise(function(resolve, reject) {
                 var reader = new FileReader();

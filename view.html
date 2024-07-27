@@ -208,7 +208,7 @@
         snapshot.forEach(function(childSnapshot) {
             var key = childSnapshot.key;
             var childData = childSnapshot.val();
-            var li = `<li><a href="/post.html?post=${key}">${childData.title}</a></li>`;
+            var li = `<li><a href="/view.html?post=${key}">${childData.title}</a></li>`;
             postList.innerHTML = li + postList.innerHTML; // Add new items at the top
         });
     });

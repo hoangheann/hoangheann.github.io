@@ -7,26 +7,45 @@
     <title>QH FbToolkit</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .border-box {
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            padding: 15px;
-            margin-top: 20px;
-        }
-        .image-preview {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .image-preview img {
-            max-width: 100px;
-            margin: 5px;
-        }
-        .image-preview .btn-delete {
-            display: block;
-            text-align: center;
-            cursor: pointer;
-            color: red;
-        }
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.comment-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
     </style>
 </head>
 <body>
@@ -40,19 +59,13 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="/">TRANG CHỦ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Post view</a>
+        <a class="nav-link" href="/post.html">SỬA POST</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Group view</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Comment view</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/docs.html">Docs</a>
+        <a class="nav-link" href="/docs.html">DOCs</a>
       </li>
     </ul>
   </div>
@@ -65,64 +78,41 @@
         <div class="col-md-8 pt-5">
             <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
                 <div class="col-md-12">
-                    <h3>Auto post to group</h3>
+                    <h3>Tạo bài đăng</h3>
+                  <div class="form-group">
+                      <label for="post-category">Phân loại nhóm</label>
+                      <select id="post-category" class="form-control"></select>
+                  </div>
                     <div class="form-group">
-                        <label for="title">Title</label>
-                        <input type="text" id="title" class="form-control" name="title" placeholder="Tiêu đề bài đăng">
+                        <input type="text" id="post-title" class="form-control" placeholder="Tiêu đề bài đăng">
                     </div>
                     <div class="form-group">
-                        <label for="paragraph">Paragraph</label>
-                        <textarea id="paragraph" class="form-control" name="paragraph" rows="14" placeholder="Nội dung bài đăng"></textarea>
+                        <textarea id="post-content" class="form-control" rows="14" placeholder="Nội dung bài đăng"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="images">Upload Images</label>
-                        <input type="file" id="images" class="form-control-file" multiple>
-                        <div class="image-preview" id="image-preview"></div>
+                        <input type="file" id="post-image" multiple accept="image/*">
+                        <div id="post-image-preview" class="image-preview"></div>
                     </div>
-                    <button id="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
             <br>
             <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
                 <div class="col-md-12">
-                    <h3>Một số mẹo:</h3>
-                    <p>Hãy dùng lệnh <span style="color: green;">/tym/</span> để random ra những hình tym emoji bất kỳ</p>
-                    <p>Hãy dùng lệnh <span style="color: green;">/tym xn/</span> để random ra những hình tym emoji bất kỳ với <b>n</b> lần.
-                     Ví dụ <span style="color: green;">/tym x3/</span> => 💕💗💘</p>
-                    <p>Tương tự với lệnh <span style="color: green;">/flower/</pre></p>
-                    <p>Hãy dùng thường xuyên để tránh bị checkpoint!</p>
+                    <h3 style="padding-bottom: 10px;">Tạo comment</h3>
+                    <div id="cmtList"></div>
+                    <button id="addcmt" class="btn btn-primary">THÊM (+)</button>
                 </div>
             </div>
-            <br>
-            <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
-                <div class="col-md-12">
-                    <h3>Auto comment to page/group - <span style="color: red;">No support</span></h3>
-                    <div class="form-group">
-                        <label for="cmt-title">Comment Title</label>
-                        <input type="text" id="cmt-title" class="form-control" name="cmt-title" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="comment">Comment</label>
-                        <textarea id="comment" class="form-control" name="comment" rows="14" disabled></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="images">Upload Images</label>
-                        <input type="file" id="images" class="form-control-file" multiple disabled>
-                        <div class="image-preview" id="image-preview"></div>
-                    </div>
-                    <button id="submit" class="btn btn-primary" disabled>Submit</button>
-                </div>
+            <div style="text-align: center; padding-top: 20px;">
+                    <button id="submit" class="btn btn-primary">LƯU LẠI</button>
             </div>
         </div>
 
         <!-- Cột 2 -->
         <div class="col-md-4 pt-4">
-            <div class="border-box" style="height: 36%; overflow-y: auto;">
+            <div style="height: 36%; overflow-y: auto; border: 2px solid #ddd;">
                 <ul id="post-list">
                 </ul>
-            </div>
-            <div class="border-box" style="height: 40%; overflow-y: auto;">
-                <p>comment list...<br>No support</p>
             </div>
         </div>
     </div>
@@ -141,110 +131,259 @@
   </footer>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
 <script>
-// Firebase configuration
-var firebaseConfig = {
-    databaseURL: "https://qhfbkit-default-rtdb.asia-southeast1.firebasedatabase.app/"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+// Function to preview images
+function previewImages(input, previewContainer) {
+  const container = document.getElementById(previewContainer);
+  container.innerHTML = '';
 
+  if (input.files) {
+    [...input.files].forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'img-wrapper';
+        
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'preview-img';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Xóa';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.onclick = function() {
+          imgWrapper.remove();
+          // Remove the file from input
+          const dt = new DataTransfer();
+          const { files } = input;
+          for (let i = 0; i < files.length; i++) {
+            if (index !== i)
+              dt.items.add(files[i]);
+          }
+          input.files = dt.files;
+        };
+        
+        imgWrapper.appendChild(img);
+        imgWrapper.appendChild(deleteBtn);
+        container.appendChild(imgWrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+}
+
+// Function to add new comment fields
+function addCommentFields() {
+  const cmtList = document.getElementById('cmtList');
+  const commentIndex = cmtList.children.length;
+  
+  const commentDiv = document.createElement('div');
+  commentDiv.className = 'comment-item';
+  commentDiv.innerHTML = `
+    <textarea rows=3 class="form-control" placeholder="Comment ${commentIndex+1}"></textarea>
+    <input type="file" id="comment-image-${commentIndex}" accept="image/*">
+    <div id="comment-image-preview-${commentIndex}" class="image-preview"></div>
+    <button class="delete-comment-btn">Xóa</button>
+  `;
+  
+  cmtList.appendChild(commentDiv);
+
+  // Add event listener for image upload
+  const imageInput = commentDiv.querySelector(`#comment-image-${commentIndex}`);
+  imageInput.addEventListener('change', function() {
+    previewImages(this, `comment-image-preview-${commentIndex}`);
+  });
+
+  // Add event listener for delete button
+  const deleteBtn = commentDiv.querySelector('.delete-comment-btn');
+  deleteBtn.addEventListener('click', function() {
+    commentDiv.remove();
+  });
+}
+
+function previewImages(input, previewContainerId) {
+  const container = document.getElementById(previewContainerId);
+  container.innerHTML = '';
+
+  if (input.files) {
+    [...input.files].forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'img-wrapper';
+        
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'preview-img';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Xóa';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.onclick = function() {
+          imgWrapper.remove();
+          // Remove the file from input
+          const dt = new DataTransfer();
+          const { files } = input;
+          for (let i = 0; i < files.length; i++) {
+            if (index !== i)
+              dt.items.add(files[i]);
+          }
+          input.files = dt.files;
+        };
+        
+        imgWrapper.appendChild(img);
+        imgWrapper.appendChild(deleteBtn);
+        container.appendChild(imgWrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+}
+
+// Add event listener for the "THÊM (+)" button
 document.addEventListener('DOMContentLoaded', function() {
-    var imageInput = document.getElementById('images');
-    var imagePreview = document.getElementById('image-preview');
-    var postList = document.getElementById('post-list');
+  const addCommentBtn = Array.from(document.getElementsByTagName('button')).find(btn => btn.textContent.trim() === 'THÊM (+)');
+  if (addCommentBtn) {
+    addCommentBtn.addEventListener('click', addCommentFields);
+  } else {
+    console.error('Không tìm thấy nút "THÊM (+)"');
+  }
 
-    // Hiển thị danh sách bài đăng từ Firebase
-    firebase.database().ref('/').on('value', function(snapshot) {
-        postList.innerHTML = ''; // Clear the list before adding new items
-        snapshot.forEach(function(childSnapshot) {
-            var key = childSnapshot.key;
-            var childData = childSnapshot.val();
-            var li = `<li><a target="_blank" href="/view.html?post=${key}">${childData.title}</a></li>`;
-            postList.innerHTML = li + postList.innerHTML; // Add new items at the top
-        });
+  // Add event listener for post image upload
+  const postImage = document.getElementById('post-image');
+  if (postImage) {
+    postImage.addEventListener('change', function() {
+      previewImages(this, 'post-image-preview');
     });
-
-    imageInput.addEventListener('change', function() {
-        imagePreview.innerHTML = '';
-        Array.from(imageInput.files).forEach(function(file, index) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var img = document.createElement('img');
-                img.src = e.target.result;
-                var deleteButton = document.createElement('div');
-                deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('btn-delete');
-                deleteButton.addEventListener('click', function() {
-                    imageInput.value = '';
-                    imagePreview.removeChild(img.parentNode);
-                });
-                var container = document.createElement('div');
-                container.appendChild(img);
-                container.appendChild(deleteButton);
-                imagePreview.appendChild(container);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
-    document.getElementById('submit').addEventListener('click', function() {
-        var title = document.getElementById('title').value;
-        var paragraph = document.getElementById('paragraph').value;
-        if (imageInput.files.length < 1 || title.length < 1 || paragraph.length < 1) {
-          alert('Vui lòng nhập đầy đủ các thông tin')
-        }
-        var images = Array.from(imageInput.files).map(function(file) {
-            return new Promise(function(resolve, reject) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    resolve(e.target.result);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        });
-
-        function removeVietnameseTones(str) {
-            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a"); 
-            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e"); 
-            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i"); 
-            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o"); 
-            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u"); 
-            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y"); 
-            str = str.replace(/đ/g, "d");
-            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-            str = str.replace(/Đ/g, "D");
-            str = str.replace(/ +/g, '-');
-            return str.toLowerCase();
-        }
-
-        Promise.all(images).then(function(base64Images) {
-            var cleanTitle = removeVietnameseTones(title);
-            firebase.database().ref(cleanTitle).set({
-                title: title,
-                paragraph: paragraph,
-                images: base64Images
-            }).then(function() {
-                alert('Post submitted successfully!');
-                document.getElementById('title').value = '';
-                document.getElementById('paragraph').value = '';
-                imageInput.value = '';
-                imagePreview.innerHTML = '';
-            }).catch(function(error) {
-                console.error('Error submitting post:', error);
-            });
-        });
-    });
+  }
 });
+
+// Function to save data to Firebase
+async function saveToFirebase() {
+  const postKey = document.getElementById('post-category').value;
+  const title = document.getElementById('post-title').value;
+  const paragraph = document.getElementById('post-content').value;
+  
+  const postImages = document.getElementById('post-image').files;
+  const commentList = document.querySelectorAll('#cmtList .comment-item');
+  
+  const postData = {
+    title: title,
+    paragraph: paragraph,
+    images: [],
+    comments: []
+  };
+
+  // Convert post images to base64
+  for (let file of postImages) {
+    const base64 = await getBase64(file);
+    postData.images.push(base64);
+  }
+
+  // Process comments
+  for (let comment of commentList) {
+    const commentText = comment.querySelector('textarea').value;
+    const commentImage = comment.querySelector('input[type="file"]').files[0];
+    
+    if (commentImage) {
+      const base64 = await getBase64(commentImage);
+      postData.comments.push([commentText, base64]);
+    } else {
+      postData.comments.push([commentText, '']);
+    }
+  }
+
+  // Save to Firebase
+  const url = `https://qhfbkit-default-rtdb.asia-southeast1.firebasedatabase.app/${postKey}/${title}.json`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(postData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (response.ok) {
+      alert('Đã lưu thành công!');
+    } else {
+      throw new Error('Lỗi khi lưu dữ liệu');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Có lỗi xảy ra khi lưu dữ liệu');
+  }
+}
+
+// Function to convert image to base64
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+// Add event listener for the save button
+document.addEventListener('DOMContentLoaded', function() {
+  const saveButton = Array.from(document.getElementsByTagName('button')).find(btn => btn.textContent.trim() === 'LƯU LẠI');
+  if (saveButton) {
+    saveButton.addEventListener('click', saveToFirebase);
+  } else {
+    console.error('Không tìm thấy nút "LƯU LẠI"');
+  }
+});
+
+
+const url = 'https://script.google.com/macros/s/AKfycbwwPM7uAamqWqlWJJ012QfDfiAr48jpUZh0LRJX_l9JqFNvIHVHrwn1DYJvVsSCQUtY/exec';
+
+function transformData(jsonData) {
+  const result = {};
+  jsonData.forEach(item => {
+    const category = item[2];
+    const url = item[1].replace('https://www.facebook.com', '');
+    if (!result[category]) {
+      result[category] = [];
+    }
+    result[category].push(url);
+  });
+  return result;
+}
+
+function createOptions(data) {
+  const select = document.getElementById('post-category'); // Giả sử bạn có một thẻ select với id là 'post-category'
+  select.innerHTML = ''; // Xóa các option hiện có
+
+  // Tạo option mặc định
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'Chọn danh mục';
+  defaultOption.selected = true;
+  defaultOption.disabled = true;
+  select.appendChild(defaultOption);
+
+  // Tạo các option từ data
+  Object.keys(data).forEach(key => {
+    const option = document.createElement('option');
+    option.value = key;
+    option.textContent = key;
+    select.appendChild(option);
+  });
+}
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    const transformedData = transformData(data);
+    console.log(JSON.stringify(transformedData, null, 2));
+    createOptions(transformedData);
+  })
+  .catch(error => console.error('Error:', error));
+
 </script>
 
 

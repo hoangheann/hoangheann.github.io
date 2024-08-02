@@ -82,11 +82,12 @@ addCommentBtn.addEventListener('click', () => {
     addCommentHTML(index);
 });
 
+
 function addCommentHTML(index, text = '', image = '') {
     const commentDiv = document.createElement('div');
     commentDiv.innerHTML = `
-        <textarea rows=3 class="form-control">${text}</textarea>
-        <input type="file" id="comment-image-${index}" accept="image/*">
+        <textarea placeholder="Comment..." rows=2 class="form-control">${text}</textarea>
+        <input type="file" id="comment-image-${index}" accept="image/*" class="comment-image-input">
         <div id="comment-image-preview-${index}" class="image-preview"></div>
         <button class="delete-comment-btn btn btn-danger mt-2">Xóa</button>
     `;
@@ -99,10 +100,38 @@ function addCommentHTML(index, text = '', image = '') {
         imgPreview.appendChild(img);
     }
 
+    const commentImageInput = commentDiv.querySelector(`#comment-image-${index}`);
+    commentImageInput.addEventListener('change', (event) => {
+        handleImageUpload(event, `#comment-image-preview-${index}`);
+    });
+
     commentDiv.querySelector('.delete-comment-btn').addEventListener('click', () => {
         commentDiv.remove();
     });
 }
+
+function handleImageUpload(event, previewSelector) {
+    const files = event.target.files;
+    const previewElement = document.querySelector(previewSelector);
+
+    for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'Xóa';
+            deleteBtn.onclick = () => {
+                img.remove();
+                deleteBtn.remove();
+            };
+            previewElement.appendChild(img);
+            previewElement.appendChild(deleteBtn);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
 
 // Save post
 submitBtn.addEventListener('click', () => {

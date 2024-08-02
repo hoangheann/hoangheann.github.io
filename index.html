@@ -3,389 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="icon.webp" />
     <title>QH FbToolkit</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-.image-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.img-wrapper {
-  position: relative;
-  width: 100px;
-  height: 100px;
-}
-
-.preview-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.delete-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.comment-item {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .image-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-        <img src="/icon.webp" width="30" height="30" alt="">
-        QH FbToolkit
-      </a>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">TRANG CHỦ</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/post.html">SỬA POST</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/docs.html">DOCs</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-
-<div class="container">
-    <div class="row">
-        <!-- Cột 1 -->
-        <div class="col-md-8 pt-5">
-            <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
-                <div class="col-md-12">
-                    <h3>Tạo bài đăng</h3>
-                  <div class="form-group">
-                      <label for="post-category">Phân loại nhóm</label>
-                      <select id="post-category" class="form-control"></select>
-                  </div>
-                    <div class="form-group">
-                        <input type="text" id="post-title" class="form-control" placeholder="Tiêu đề bài đăng">
-                    </div>
-                    <div class="form-group">
-                        <textarea id="post-content" class="form-control" rows="14" placeholder="Nội dung bài đăng"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <input type="file" id="post-image" multiple accept="image/*">
-                        <div id="post-image-preview" class="image-preview"></div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
-                <div class="col-md-12">
-                    <h3 style="padding-bottom: 10px;">Tạo comment</h3>
-                    <div id="cmtList"></div>
-                    <button id="addcmt" class="btn btn-primary">THÊM (+)</button>
-                </div>
-            </div>
-            <div style="text-align: center; padding-top: 20px;">
-                    <button id="submit" class="btn btn-primary">LƯU LẠI</button>
-            </div>
-        </div>
-
-        <!-- Cột 2 -->
-        <div class="col-md-4 pt-4">
-            <div style="height: 36%; overflow-y: auto; border: 2px solid #ddd;">
-                <ul id="post-list">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="/icon.webp" width="30" height="30" alt=""> QH FbToolkit</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">TRANG CHỦ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/post.html">SỬA POST</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs.html">DOCs</a>
+                    </li>
                 </ul>
             </div>
         </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 pt-5">
+                <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
+                    <div class="col-md-12">
+                        <h3>Tạo bài đăng</h3>
+                        <div class="form-group">
+                            <label for="post-category">Phân loại nhóm</label>
+                            <select id="post-category" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-title">Tiêu đề</label>
+                            <input type="text" id="post-title" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="post-content">Nội dung</label>
+                            <textarea id="post-content" class="form-control" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="post-image">Hình ảnh</label>
+                            <input type="file" id="post-image" class="form-control" multiple accept="image/*">
+                            <div id="post-image-preview" class="image-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-2 pb-5" style="border: 2px solid #ddd; border-radius: 10px;">
+                    <div class="col-md-12">
+                        <h3 style="padding-bottom: 10px;">Tạo comment</h3>
+                        <div id="cmtList"></div>
+                        <button id="addComment" class="btn btn-primary mt-2">THÊM (+)</button>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding-top: 20px;">
+                    <button id="submit" class="btn btn-success">LƯU LẠI</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="container">
-  <footer class="py-3 my-4">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-    </ul>
-    <p class="text-center text-muted">© 2024 | NDH - Hue city</p>
-  </footer>
-</div>
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <p class="col-md-4 mb-0 text-muted">© 2024 | NDH - Hue city</p>
+            <ul class="nav col-md-4 justify-content-end">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+            </ul>
+        </footer>
+    </div>
 
-
-<script>
-
-// Function to preview images
-function previewImages(input, previewContainer) {
-  const container = document.getElementById(previewContainer);
-  container.innerHTML = '';
-
-  if (input.files) {
-    [...input.files].forEach((file, index) => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const imgWrapper = document.createElement('div');
-        imgWrapper.className = 'img-wrapper';
-        
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.className = 'preview-img';
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Xóa';
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.onclick = function() {
-          imgWrapper.remove();
-          // Remove the file from input
-          const dt = new DataTransfer();
-          const { files } = input;
-          for (let i = 0; i < files.length; i++) {
-            if (index !== i)
-              dt.items.add(files[i]);
-          }
-          input.files = dt.files;
-        };
-        
-        imgWrapper.appendChild(img);
-        imgWrapper.appendChild(deleteBtn);
-        container.appendChild(imgWrapper);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-}
-
-// Function to add new comment fields
-function addCommentFields() {
-  const cmtList = document.getElementById('cmtList');
-  const commentIndex = cmtList.children.length;
-  
-  const commentDiv = document.createElement('div');
-  commentDiv.className = 'comment-item';
-  commentDiv.innerHTML = `
-    <textarea rows=3 class="form-control" placeholder="Comment ${commentIndex+1}"></textarea>
-    <input type="file" id="comment-image-${commentIndex}" accept="image/*">
-    <div id="comment-image-preview-${commentIndex}" class="image-preview"></div>
-    <button class="delete-comment-btn">Xóa</button>
-  `;
-  
-  cmtList.appendChild(commentDiv);
-
-  // Add event listener for image upload
-  const imageInput = commentDiv.querySelector(`#comment-image-${commentIndex}`);
-  imageInput.addEventListener('change', function() {
-    previewImages(this, `comment-image-preview-${commentIndex}`);
-  });
-
-  // Add event listener for delete button
-  const deleteBtn = commentDiv.querySelector('.delete-comment-btn');
-  deleteBtn.addEventListener('click', function() {
-    commentDiv.remove();
-  });
-}
-
-function previewImages(input, previewContainerId) {
-  const container = document.getElementById(previewContainerId);
-  container.innerHTML = '';
-
-  if (input.files) {
-    [...input.files].forEach((file, index) => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const imgWrapper = document.createElement('div');
-        imgWrapper.className = 'img-wrapper';
-        
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.className = 'preview-img';
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'Xóa';
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.onclick = function() {
-          imgWrapper.remove();
-          // Remove the file from input
-          const dt = new DataTransfer();
-          const { files } = input;
-          for (let i = 0; i < files.length; i++) {
-            if (index !== i)
-              dt.items.add(files[i]);
-          }
-          input.files = dt.files;
-        };
-        
-        imgWrapper.appendChild(img);
-        imgWrapper.appendChild(deleteBtn);
-        container.appendChild(imgWrapper);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-}
-
-// Add event listener for the "THÊM (+)" button
-document.addEventListener('DOMContentLoaded', function() {
-  const addCommentBtn = Array.from(document.getElementsByTagName('button')).find(btn => btn.textContent.trim() === 'THÊM (+)');
-  if (addCommentBtn) {
-    addCommentBtn.addEventListener('click', addCommentFields);
-  } else {
-    console.error('Không tìm thấy nút "THÊM (+)"');
-  }
-
-  // Add event listener for post image upload
-  const postImage = document.getElementById('post-image');
-  if (postImage) {
-    postImage.addEventListener('change', function() {
-      previewImages(this, 'post-image-preview');
-    });
-  }
-});
-
-// Function to save data to Firebase
-async function saveToFirebase() {
-  const postKey = document.getElementById('post-category').value;
-  const title = document.getElementById('post-title').value;
-  const paragraph = document.getElementById('post-content').value;
-  
-  const postImages = document.getElementById('post-image').files;
-  const commentList = document.querySelectorAll('#cmtList .comment-item');
-  
-  const postData = {
-    title: title,
-    paragraph: paragraph,
-    images: [],
-    comments: []
-  };
-
-  // Convert post images to base64
-  for (let file of postImages) {
-    const base64 = await getBase64(file);
-    postData.images.push(base64);
-  }
-
-  // Process comments
-  for (let comment of commentList) {
-    const commentText = comment.querySelector('textarea').value;
-    const commentImage = comment.querySelector('input[type="file"]').files[0];
-    
-    if (commentImage) {
-      const base64 = await getBase64(commentImage);
-      postData.comments.push([commentText, base64]);
-    } else {
-      postData.comments.push([commentText, '']);
-    }
-  }
-
-  // Save to Firebase
-  const url = `https://qhfbkit-default-rtdb.asia-southeast1.firebasedatabase.app/${postKey}/${title}.json`;
-  
-  try {
-    const response = await fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(postData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    if (response.ok) {
-      alert('Đã lưu thành công!');
-    } else {
-      throw new Error('Lỗi khi lưu dữ liệu');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Có lỗi xảy ra khi lưu dữ liệu');
-  }
-}
-
-// Function to convert image to base64
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
-
-// Add event listener for the save button
-document.addEventListener('DOMContentLoaded', function() {
-  const saveButton = Array.from(document.getElementsByTagName('button')).find(btn => btn.textContent.trim() === 'LƯU LẠI');
-  if (saveButton) {
-    saveButton.addEventListener('click', saveToFirebase);
-  } else {
-    console.error('Không tìm thấy nút "LƯU LẠI"');
-  }
-});
-
-
-const url = 'https://script.google.com/macros/s/AKfycbzFJrK-ErBat8zfAtu-fk8fn07vj3zxNLfeHGpAtgrnI5v62hW3pNHptneiYT80b8eT/exec';
-
-function transformData(jsonData) {
-  const result = {};
-  jsonData.forEach(item => {
-    const category = item[2];
-    const url = item[1].replace('https://www.facebook.com', '');
-    if (!result[category]) {
-      result[category] = [];
-    }
-    result[category].push(url);
-  });
-  return result;
-}
-
-function createOptions(data) {
-  const select = document.getElementById('post-category'); // Giả sử bạn có một thẻ select với id là 'post-category'
-  select.innerHTML = ''; // Xóa các option hiện có
-
-  // Tạo option mặc định
-  const defaultOption = document.createElement('option');
-  defaultOption.value = '';
-  defaultOption.textContent = 'Chọn danh mục';
-  defaultOption.selected = true;
-  defaultOption.disabled = true;
-  select.appendChild(defaultOption);
-
-  // Tạo các option từ data
-  Object.keys(data).forEach(key => {
-    const option = document.createElement('option');
-    option.value = key;
-    option.textContent = key;
-    select.appendChild(option);
-  });
-}
-
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    const transformedData = transformData(data);
-    console.log(JSON.stringify(transformedData, null, 2));
-    createOptions(transformedData);
-  })
-  .catch(error => console.error('Error:', error));
-
-</script>
-
-
+    <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

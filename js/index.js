@@ -135,7 +135,7 @@ postImageInput.addEventListener('change', (event) => {
 });
 
 
-const url = 'https://script.google.com/macros/s/AKfycbzFJrK-ErBat8zfAtu-fk8fn07vj3zxNLfeHGpAtgrnI5v62hW3pNHptneiYT80b8eT/exec';
+const url = 'https://script.google.com/macros/s/AKfycbzIYH1W-7MxJ7hhVkK643jXB7yB9eWXCRoUqXpQCvxVxnHjLiFGmBtKaRxHtoef33H7/exec';
 
 function transformData(jsonData) {
   const result = {};
